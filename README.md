@@ -1,2 +1,2 @@
 # www
-Nextjs application for TakeNotes. 
+React.js application for TakeNotes. 
