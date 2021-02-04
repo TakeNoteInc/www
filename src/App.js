@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Amplify from "aws-amplify";
 import {
   AmplifyAuthenticator,
   AmplifySignUp,
-  AmplifySignOut,
+  AmplifySignIn,
 } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
+import PageRouter from "./PageRouter";
 import awsconfig from "./aws-exports";
 
 Amplify.configure(awsconfig);
 
 const AuthStateApp = () => {
-  const [authState, setAuthState] = React.useState();
-  const [user, setUser] = React.useState();
+  const [authState, setAuthState] = useState();
+  const [user, setUser] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState);
       setUser(authData);
@@ -23,18 +24,14 @@ const AuthStateApp = () => {
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
-      <div>Hello, {user.attributes.email}</div>
-      <AmplifySignOut />
+      <PageRouter user={user} />
     </div>
   ) : (
-    <AmplifyAuthenticator>
+    <AmplifyAuthenticator usernameAlias="email">
       <AmplifySignUp
         slot="sign-up"
-        formFields={[
-          { type: "username" },
-          { type: "password" },
-          { type: "email" },
-        ]}
+        usernameAlias="email"
+        formFields={[{ type: "email" }, { type: "password" }]}
       />
     </AmplifyAuthenticator>
   );
