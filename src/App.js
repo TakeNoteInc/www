@@ -9,6 +9,8 @@ import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import PageRouter from "./PageRouter";
 import awsconfig from "./aws-exports";
 
+import "./styles/globals.css";
+
 Amplify.configure(awsconfig);
 
 const AuthStateApp = () => {

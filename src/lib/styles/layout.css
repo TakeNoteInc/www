@@ -1,0 +1,21 @@
+.layout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: blue;
+  height: 500px;
+}
+
+.left {
+  width: 25%;
+  background-color: red;
+}
+
+.middle {
+  width: 50%;
+}
+
+.right {
+  width: 25%;
+  background-color: green;
+}
