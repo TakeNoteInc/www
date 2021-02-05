@@ -1,12 +1,11 @@
 import React from "react";
 
-import Layout from "../lib/Layout";
-import TextEditor from "../components/TextEditor";
+import HomeDashBoard from "../components/HomeDashBoard";
 
 const HomePage = () => {
   return (
     <div>
-      <Layout middle={<TextEditor />} />
+      <HomeDashBoard />
     </div>
   );
 };
