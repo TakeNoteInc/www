@@ -30,12 +30,12 @@ class Controller extends Component {
     axios
       .get(
         "https://j6ejsz42zd.execute-api.us-east-1.amazonaws.com/test/users/" +
-          this.props.userAuthData.attributes.sub,
+          this.props.cognitoUser.attributes.sub,
         {
           headers: {
             Authorization:
               "Bearer " +
-              this.props.userAuthData.signInUserSession.idToken.jwtToken,
+              this.props.cognitoUser.signInUserSession.idToken.jwtToken,
           },
         }
       )
@@ -53,14 +53,7 @@ class Controller extends Component {
 
   render() {
     const { user } = this.state;
-
-    if (!user) {
-      return (
-        <div>
-          <CircularProgress />
-        </div>
-      );
-    } else {
+    if (user) {
       return (
         <Router>
           <Nav title="TakeNotes" links={links} />
@@ -72,6 +65,12 @@ class Controller extends Component {
           </Route>
           <AmplifySignOut />
         </Router>
+      );
+    } else {
+      return (
+        <div>
+          <CircularProgress />
+        </div>
       );
     }
   }
