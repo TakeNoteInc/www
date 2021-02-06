@@ -11,9 +11,7 @@ import Nav from "./lib/Nav";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 
-const GET_USER_URI =
-  process.env.REACT_APP_GET_USER_URI ||
-  "https://f2n5qr8i08.execute-api.us-east-1.amazonaws.com/prod/users/";
+const GET_USER_URI = process.env.REACT_APP_GET_USER_URI;
 
 const links = [
   { title: "Home", href: "/" },

@@ -39,11 +39,10 @@ const AuthStateApp = () => {
         usernameAlias="email"
         formFields={[
           { type: "email" },
-          { type: "password" },
           {
             type: "custom:startDate",
             name: "custom:startDate",
-            label: "Start Date",
+            label: "Start Date *",
             inputProps: {
               type: "date",
             },
@@ -51,11 +50,12 @@ const AuthStateApp = () => {
           {
             type: "custom:endDate",
             name: "custom:endDate",
-            label: "End Date",
+            label: "End Date *",
             inputProps: {
               type: "date",
             },
           },
+          { type: "password" },
         ]}
       />
     </AmplifyAuthenticator>
