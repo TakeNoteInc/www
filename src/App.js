@@ -4,22 +4,7 @@ import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import PageRouter from "./PageRouter";
 import awsconfig from "./aws-exports";
-
 import "./styles/globals.css";
-/*
-{
-  type: "custom:startDate",
-  label: "Start Date",
-  placeholder: "yyyy-mm-dd",
-  required: true,
-},
-{
-  type: "custom:startDate",
-  label: "End Date",
-  placeholder: "yyyy-mm-dd",
-  required: true,
-},
-*/
 
 Amplify.configure(awsconfig);
 
@@ -34,7 +19,7 @@ const AuthStateApp = () => {
     });
   }, []);
 
-  return authState === AuthState.SignedIn && user ? (
+  return authState === AuthState.SignedIn && user?.signInUserSession ? (
     <div className="App">
       <PageRouter user={user} />
     </div>
@@ -43,7 +28,26 @@ const AuthStateApp = () => {
       <AmplifySignUp
         slot="sign-up"
         usernameAlias="email"
-        formFields={[{ type: "email" }, { type: "password" }]}
+        formFields={[
+          { type: "email" },
+          { type: "password" },
+          {
+            type: "custom:startDate",
+            name: "custom:startDate",
+            label: "Start Date",
+            inputProps: {
+              type: "date",
+            },
+          },
+          {
+            type: "custom:endDate",
+            name: "custom:endDate",
+            label: "End Date",
+            inputProps: {
+              type: "date",
+            },
+          },
+        ]}
       />
     </AmplifyAuthenticator>
   );
