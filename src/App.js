@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import dotenv from "dotenv";
 import Amplify from "aws-amplify";
 import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
@@ -7,7 +8,8 @@ import awsconfig from "./aws-exports";
 
 // global styling
 import "./styles/globals.css";
-
+// config environment
+dotenv.config();
 Amplify.configure(awsconfig);
 
 const AuthStateApp = () => {
@@ -24,7 +26,7 @@ const AuthStateApp = () => {
   const cognitoAuthIsValid =
     authState === AuthState.SignedIn &&
     cognitoUser &&
-    cognitoUser.signInUserSession;
+    cognitoUser?.signInUserSession;
 
   return cognitoAuthIsValid ? (
     <div className="App">

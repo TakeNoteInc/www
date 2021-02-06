@@ -11,6 +11,10 @@ import Nav from "./lib/Nav";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 
+const GET_USER_URI =
+  process.env.REACT_APP_GET_USER_URI ||
+  "https://f2n5qr8i08.execute-api.us-east-1.amazonaws.com/prod/users/";
+
 const links = [
   { title: "Home", href: "/" },
   { title: "Profile", href: "/profile" },
@@ -27,18 +31,15 @@ class Controller extends Component {
   }
 
   getUser() {
+    const { cognitoUser } = this.props;
+    const BEARER_TOKEN =
+      "Bearer " + cognitoUser.signInUserSession.idToken.jwtToken;
     axios
-      .get(
-        "https://j6ejsz42zd.execute-api.us-east-1.amazonaws.com/test/users/" +
-          this.props.cognitoUser.attributes.sub,
-        {
-          headers: {
-            Authorization:
-              "Bearer " +
-              this.props.cognitoUser.signInUserSession.idToken.jwtToken,
-          },
-        }
-      )
+      .get(GET_USER_URI + cognitoUser.attributes.sub, {
+        headers: {
+          Authorization: BEARER_TOKEN,
+        },
+      })
       .then((res) => {
         console.log(res);
         this.setState({ user: res.data.Item });
