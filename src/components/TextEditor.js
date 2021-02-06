@@ -5,14 +5,17 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 class TextEditor extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   render() {
+    const { defaultContents } = this.props;
+    let data = "<p>" + defaultContents + "</p>";
     return (
       <div onClick={this.focusEditor}>
         <CKEditor
           editor={ClassicEditor}
-          data="<p>start your journal entry...</p>"
+          data={data}
           onReady={(editor) => {
             console.log("Editor is ready to use!", editor);
           }}
