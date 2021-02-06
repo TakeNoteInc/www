@@ -1,13 +1,16 @@
 import React from "react";
+import TimelineElement from "./TimelineElement.js";
 
 const WeekTab = (props) => {
-  const { weeks, setWeekIndex } = props;
+  const { weeks, setWeekIndex, activeWeek} = props;
   return (
-    <div>
+    <div className = "Timeline">
       {weeks.map((w, idx) => (
-        <p onClick={() => setWeekIndex(idx)} key={idx}>
-          week #{idx}
-        </p>
+        <ul> 
+          <li onClick={() => setWeekIndex(idx)} key={idx}>
+            <TimelineElement number = {idx} chosen = {activeWeek}/> 
+          </li>
+        </ul>
       ))}
     </div>
   );

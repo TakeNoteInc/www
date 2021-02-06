@@ -58,7 +58,9 @@ class PageRouter extends Component {
         <Route exact path="/profile">
           <ProfilePage user={this.props.user} />
         </Route>
+        <div className = "signOut"> 
         <AmplifySignOut />
+        </div>
       </Router>
     );
   }
