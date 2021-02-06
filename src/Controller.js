@@ -40,7 +40,8 @@ class Controller extends Component {
         }
       )
       .then((res) => {
-        this.setState({ user: res.data.Item.docBody });
+        console.log(res);
+        this.setState({ user: res.data.Item });
       })
       .catch((err) => {
         console.log(err);
@@ -58,10 +59,10 @@ class Controller extends Component {
         <Router>
           <Nav title="TakeNotes" links={links} />
           <Route exact path="/">
-            <HomePage user={user} />
+            <HomePage user={user.docBody} />
           </Route>
           <Route exact path="/profile">
-            <ProfilePage user={user} />
+            <ProfilePage user={user.docBody} />
           </Route>
           <AmplifySignOut />
         </Router>

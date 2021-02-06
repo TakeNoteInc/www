@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  width: 100vw
 }
 
 h1 {
@@ -13,6 +14,10 @@ p {
   margin: 0;
 }
 
+li{
+  list-style-type: none;
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -22,3 +27,11 @@ p {
   display: flex;
   flex-direction: column;
 }
+
+.signOut{
+  bottom:0;
+  right:0;
+  position:fixed;
+}
+
+

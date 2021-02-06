@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import WeekTab from "./WeekTab.js";
 import EntriesTab from "./EntriesTab.js";
 import EditorTab from "./EditorTab.js";
@@ -33,6 +32,8 @@ class JournalDash extends Component {
     const { weekIndex, entryIndex } = this.state;
     const activeWeek = journal.weeks[weekIndex];
     const activeEntry = activeWeek.entries[entryIndex];
+    console.log("Active Week " + weekIndex);
+    console.log("Active Entry " + entryIndex);
 
     return (
       <div>

@@ -21,7 +21,9 @@ const AuthStateApp = () => {
     });
   }, []);
 
-  return authState === AuthState.SignedIn && cognitoUser ? (
+  return authState === AuthState.SignedIn &&
+    cognitoUser &&
+    cognitoUser.signInUserSession ? (
     <div className="App">
       <Controller cognitoUser={cognitoUser} />
     </div>
