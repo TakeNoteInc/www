@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from "axios";
 
 //ui library
@@ -15,55 +16,65 @@ const links = [
   { title: "Profile", href: "/profile" },
 ];
 
-class PageRouter extends Component {
+class Controller extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      user: null,
+    };
+
     this.getUser = this.getUser.bind(this);
   }
 
   getUser() {
-    /* axios
+    axios
       .get(
         "https://j6ejsz42zd.execute-api.us-east-1.amazonaws.com/test/users/" +
-          this.props.user.attributes.sub,
+          this.props.cognitoUser.attributes.sub,
         {
           headers: {
             Authorization:
-              "Bearer " + this.props.user.signInUserSession.idToken.jwtToken,
+              "Bearer " +
+              this.props.cognitoUser.signInUserSession.idToken.jwtToken,
           },
         }
       )
       .then((res) => {
         console.log(res);
+        this.setState({ user: res.data.Item });
       })
       .catch((err) => {
         console.log(err);
       });
-      */
   }
 
   componentDidMount() {
-    console.log(this.props.user);
     this.getUser();
   }
 
   render() {
-    return (
-      <Router>
-        <Nav title="TakeNotes" links={links} />
-        <Route exact path="/">
-          <HomePage />
-        </Route>
-        <Route exact path="/profile">
-          <ProfilePage user={this.props.user} />
-        </Route>
-        <div className = "signOut"> 
-        <AmplifySignOut />
+    const { user } = this.state;
+    if (user) {
+      return (
+        <Router>
+          <Nav title="TakeNotes" links={links} />
+          <Route exact path="/">
+            <HomePage user={user.docBody} />
+          </Route>
+          <Route exact path="/profile">
+            <ProfilePage user={user.docBody} />
+          </Route>
+          <AmplifySignOut />
+        </Router>
+      );
+    } else {
+      return (
+        <div>
+          <CircularProgress />
         </div>
-      </Router>
-    );
+      );
+    }
   }
 }
 
-export default PageRouter;
+export default Controller;

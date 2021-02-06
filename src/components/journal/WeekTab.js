@@ -1,16 +1,32 @@
 import React from "react";
-import TimelineElement from "./TimelineElement.js";
+
+/*
+import { Button } from "@material-ui/core";
+function TimelineElement(props) {
+  return (
+    <div
+      className={
+        props.number == props.chosen
+          ? "TimelineElement Chosen"
+          : "TimelineElement"
+      }
+    >
+      <Button fullWidth variant="outlined" color="inherit">
+        Week {props.number}
+      </Button>
+    </div>
+  );
+}
+*/
 
 const WeekTab = (props) => {
-  const { weeks, setWeekIndex, activeWeek} = props;
+  const { weeks, setWeekIndex } = props;
   return (
-    <div className = "Timeline">
+    <div>
       {weeks.map((w, idx) => (
-        <ul> 
-          <li onClick={() => setWeekIndex(idx)} key={idx}>
-            <TimelineElement number = {idx} chosen = {activeWeek}/> 
-          </li>
-        </ul>
+        <p key={idx} onClick={() => setWeekIndex(idx)}>
+          week #{idx}
+        </p>
       ))}
     </div>
   );

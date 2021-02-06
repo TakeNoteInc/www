@@ -1,2 +1,3 @@
 # www
-React.js application for TakeNotes. 
+
+React.js application for TakeNotes.
