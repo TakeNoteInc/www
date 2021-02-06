@@ -1,10 +1,13 @@
 import React from "react";
 
 const ProfilePage = (props) => {
-  const { user } = props;
+  const { email, start, end } = props.user;
   return (
     <div>
-      <p>Hi {user.attributes.email}, welcome to your profile.</p>
+      <p>
+        Hi {email}, welcome to your profile. Your working from {start} till{" "}
+        {end}.
+      </p>
     </div>
   );
 };

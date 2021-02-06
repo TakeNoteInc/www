@@ -2,24 +2,11 @@ import React, { useEffect, useState } from "react";
 import Amplify from "aws-amplify";
 import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
-import PageRouter from "./PageRouter";
+import Controller from "./Controller";
 import awsconfig from "./aws-exports";
 
+// global styling
 import "./styles/globals.css";
-/*
-{
-  type: "custom:startDate",
-  label: "Start Date",
-  placeholder: "yyyy-mm-dd",
-  required: true,
-},
-{
-  type: "custom:startDate",
-  label: "End Date",
-  placeholder: "yyyy-mm-dd",
-  required: true,
-},
-*/
 
 Amplify.configure(awsconfig);
 
@@ -36,7 +23,7 @@ const AuthStateApp = () => {
 
   return authState === AuthState.SignedIn && user ? (
     <div className="App">
-      <PageRouter user={user} />
+      <Controller userAuthData={user} />
     </div>
   ) : (
     <AmplifyAuthenticator usernameAlias="email">
