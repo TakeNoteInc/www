@@ -24,9 +24,9 @@ const WeekTab = (props) => {
   return (
     <div>
       {weeks.map((w, idx) => (
-        <p key={idx} onClick={() => setWeekIndex(idx)}>
-          week #{idx}
-        </p>
+        <div key={idx}>
+          <button onClick={() => setWeekIndex(idx)}>week #{idx}</button>
+        </div>
       ))}
     </div>
   );

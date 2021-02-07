@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import dotenv from "dotenv";
 import Amplify from "aws-amplify";
 import { AmplifyAuthenticator, AmplifySignUp } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from "@aws-amplify/ui-components";
 import Controller from "./Controller";
 import awsconfig from "./aws-exports";
-
+// redux store
+import store from "./store";
 // global styling
 import "./styles/globals.css";
 
+// config environment
+dotenv.config();
 Amplify.configure(awsconfig);
 
 const AuthStateApp = () => {
@@ -24,12 +29,12 @@ const AuthStateApp = () => {
   const cognitoAuthIsValid =
     authState === AuthState.SignedIn &&
     cognitoUser &&
-    cognitoUser.signInUserSession;
+    cognitoUser?.signInUserSession;
 
   return cognitoAuthIsValid ? (
-    <div className="App">
+    <Provider store={store}>
       <Controller cognitoUser={cognitoUser} />
-    </div>
+    </Provider>
   ) : (
     <AmplifyAuthenticator usernameAlias="email">
       <AmplifySignUp
@@ -37,11 +42,10 @@ const AuthStateApp = () => {
         usernameAlias="email"
         formFields={[
           { type: "email" },
-          { type: "password" },
           {
             type: "custom:startDate",
             name: "custom:startDate",
-            label: "Start Date",
+            label: "Start Date *",
             inputProps: {
               type: "date",
             },
@@ -49,11 +53,12 @@ const AuthStateApp = () => {
           {
             type: "custom:endDate",
             name: "custom:endDate",
-            label: "End Date",
+            label: "End Date *",
             inputProps: {
               type: "date",
             },
           },
+          { type: "password" },
         ]}
       />
     </AmplifyAuthenticator>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { AmplifySignOut } from "@aws-amplify/ui-react";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import axios from "axios";
+import { getUser } from "./actions/user";
 
 //ui library
 import Nav from "./lib/Nav";
@@ -22,49 +22,44 @@ class Controller extends Component {
     this.state = {
       user: null,
     };
-
-    this.getUser = this.getUser.bind(this);
   }
+  /*
+  getUser = async () => {
+    try {
+      const { cognitoUser } = this.props;
+      const { jwtToken } = cognitoUser.signInUserSession.idToken;
+      const userId = cognitoUser.attributes.sub;
+      const BEARER_TOKEN = "Bearer " + jwtToken;
+      const data = { headers: { Authorization: BEARER_TOKEN } };
+      const res = await axios.get(GET_USER_URI + userId, data);
 
-  getUser() {
-    axios
-      .get(
-        "https://j6ejsz42zd.execute-api.us-east-1.amazonaws.com/test/users/" +
-          this.props.cognitoUser.attributes.sub,
-        {
-          headers: {
-            Authorization:
-              "Bearer " +
-              this.props.cognitoUser.signInUserSession.idToken.jwtToken,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        this.setState({ user: res.data.Item });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+      this.setState({ user: res.data.Item });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  */
 
   componentDidMount() {
-    this.getUser();
+    const { cognitoUser } = this.props;
+    const { jwtToken } = cognitoUser.signInUserSession.idToken;
+    const userId = cognitoUser.attributes.sub;
+    //console.log(cognitoUser);
+    this.props.getUser(jwtToken, userId);
   }
 
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
     if (user) {
       return (
         <Router>
           <Nav title="TakeNotes" links={links} />
           <Route exact path="/">
-            <HomePage user={user.docBody} />
+            <HomePage />
           </Route>
           <Route exact path="/profile">
             <ProfilePage user={user.docBody} />
           </Route>
-          <AmplifySignOut />
         </Router>
       );
     } else {
@@ -77,4 +72,8 @@ class Controller extends Component {
   }
 }
 
-export default Controller;
+const mapStateToProps = (state) => ({
+  user: state.userData.user,
+});
+
+export default connect(mapStateToProps, { getUser })(Controller);
