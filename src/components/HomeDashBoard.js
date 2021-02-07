@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 //components
 import JournalDash from "./journal/JournalDash";
@@ -29,13 +30,17 @@ class HomeDashBoard extends Component {
           <button onClick={() => this.toggleView(false)}>Notes</button>
         </div>
         {journalViewActive ? (
-          <JournalDash journal={user.journal} />
+          <JournalDash journal={user.docBody.journal} />
         ) : (
-          <NotesDash user={user} />
+          <NotesDash user={user.docBody} />
         )}
       </div>
     );
   }
 }
 
-export default HomeDashBoard;
+const mapStateToProps = (state) => ({
+  user: state.userData.user,
+});
+
+export default connect(mapStateToProps)(HomeDashBoard);

@@ -1,7 +1,7 @@
 import React from "react";
 
 const EntriesTab = (props) => {
-  const { entries, setEntryIndex } = props;
+  const { entries, addEntry, setEntryIndex } = props;
   return (
     <div>
       {entries.map((e, idx) => (
@@ -9,6 +9,17 @@ const EntriesTab = (props) => {
           entry #{idx}
         </p>
       ))}
+      <button
+        onClick={() => {
+          addEntry({
+            created: "today",
+            update: "yesterday",
+            content: "stuff",
+          });
+        }}
+      >
+        Add Entry
+      </button>
     </div>
   );
 };
