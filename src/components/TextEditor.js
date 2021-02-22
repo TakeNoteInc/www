@@ -9,11 +9,12 @@ class TextEditor extends React.Component {
   }
 
   render() {
+    const { content } = this.props;
     return (
       <div onClick={this.focusEditor}>
         <CKEditor
           editor={ClassicEditor}
-          data={"<p>Start your entry here...</p>"}
+          data={content}
           onReady={(editor) => {
             //console.log("Editor is ready to use!", editor);
           }}
@@ -27,6 +28,7 @@ class TextEditor extends React.Component {
             //console.log("Focus.", editor);
           }}
         />
+        <button>Save Entry</button>
       </div>
     );
   }

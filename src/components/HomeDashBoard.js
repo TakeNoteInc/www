@@ -9,18 +9,18 @@ class HomeDashBoard extends Component {
   constructor() {
     super();
     this.state = {
-      journalViewActive: true,
+      journalIsActive: true,
     };
 
     this.toggleView = this.toggleView.bind(this);
   }
 
-  toggleView(journalViewActive) {
-    this.setState({ journalViewActive });
+  toggleView(journalIsActive) {
+    this.setState({ journalIsActive });
   }
 
   render() {
-    const { journalViewActive } = this.state;
+    const { journalIsActive } = this.state;
     const { user } = this.props;
 
     return (
@@ -29,8 +29,8 @@ class HomeDashBoard extends Component {
           <button onClick={() => this.toggleView(true)}>Journal</button>
           <button onClick={() => this.toggleView(false)}>Notes</button>
         </div>
-        {journalViewActive ? (
-          <JournalDash journal={user.docBody.journal} />
+        {journalIsActive ? (
+          <JournalDash cognitoUser={this.props.cognitoUser} />
         ) : (
           <NotesDash user={user.docBody} />
         )}

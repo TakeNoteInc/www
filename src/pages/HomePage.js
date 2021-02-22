@@ -2,10 +2,10 @@ import React from "react";
 
 import HomeDashBoard from "../components/HomeDashBoard";
 
-const HomePage = () => {
+const HomePage = (props) => {
   return (
     <div>
-      <HomeDashBoard />
+      <HomeDashBoard {...props} />
     </div>
   );
 };

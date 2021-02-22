@@ -40,26 +40,7 @@ const AuthStateApp = () => {
       <AmplifySignUp
         slot="sign-up"
         usernameAlias="email"
-        formFields={[
-          { type: "email" },
-          {
-            type: "custom:startDate",
-            name: "custom:startDate",
-            label: "Start Date *",
-            inputProps: {
-              type: "date",
-            },
-          },
-          {
-            type: "custom:endDate",
-            name: "custom:endDate",
-            label: "End Date *",
-            inputProps: {
-              type: "date",
-            },
-          },
-          { type: "password" },
-        ]}
+        formFields={[{ type: "email" }, { type: "password" }]}
       />
     </AmplifyAuthenticator>
   );
