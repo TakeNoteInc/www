@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -8,7 +7,8 @@ import WeekTab from "./WeekTab.js";
 import EntriesTab from "./EntriesTab.js";
 import EditorTab from "./EditorTab.js";
 
-const BASE_URL = "https://vip3e81bu0.execute-api.us-east-1.amazonaws.com/test";
+import { getWeeks } from "../../actions/weeks";
+import { getEntries, addEntry } from "../../actions/entries";
 
 class JournalDash extends Component {
   constructor() {
@@ -21,87 +21,29 @@ class JournalDash extends Component {
     };
     this.setWeekIndex = this.setWeekIndex.bind(this);
     this.setEntryIndex = this.setEntryIndex.bind(this);
-    this.getWeeks = this.getWeeks.bind(this);
-    this.getEntries = this.getEntries.bind(this);
-    this.addEntry = this.addEntry.bind(this);
   }
 
+  // sets current week index (id) and triggers fetch of weeks entries
   setWeekIndex(weekIndex) {
-    this.setState({ weekIndex }, () => {
-      this.getEntries();
+    // when selected week changes reset entry index to 0
+    this.setState({ weekIndex, entryIndex: 0 }, () => {
+      this.props.getEntries(this.props.cognitoUser, this.state.weekIndex);
     });
   }
-
+  // sets current entry index (id) to display in editor
   setEntryIndex(entryIndex) {
     this.setState({ entryIndex });
   }
-
-  generateHeaders(cognitoUser) {
-    const { jwtToken } = this.props.cognitoUser.signInUserSession.idToken;
-    const BEARER_TOKEN = "Bearer " + jwtToken;
-    return { headers: { Authorization: BEARER_TOKEN } };
-  }
-  getCognitoID() {
-    return this.props.cognitoUser.attributes.sub;
-  }
-
-  getWeeks = async () => {
-    try {
-      const cognitoId = this.getCognitoID();
-      const headers = this.generateHeaders();
-      const path = BASE_URL + `/users/${cognitoId}/journal/weeks`;
-      const res = await axios.get(path, headers);
-      this.setState({
-        weeks: res.data.Item.docBody.journal.weeks,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  getEntries = async () => {
-    try {
-      const cognitoId = this.getCognitoID();
-      const headers = this.generateHeaders();
-      const path =
-        BASE_URL + `/users/${cognitoId}/journal/weeks/${this.state.weekIndex}`;
-      const res = await axios.get(path, headers);
-      this.setState({
-        entries: res.data.Item.docBody.journal.weeks[0].entries,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  addEntry = async () => {
-    try {
-      const data = {
-        entry: {
-          content: "",
-        },
-      };
-      const cognitoId = this.getCognitoID();
-      const headers = this.generateHeaders();
-      const path =
-        BASE_URL +
-        `/users/${cognitoId}/journal/weeks/${this.state.weekIndex}/entries`;
-      const res = await axios.post(path, data, headers);
-      this.getEntries();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  // fetch weeks and entries for week (defaults to week 0)
   componentDidMount() {
-    this.getWeeks();
-    this.getEntries();
+    this.props.getWeeks(this.props.cognitoUser);
+    this.props.getEntries(this.props.cognitoUser, this.state.weekIndex);
   }
 
   render() {
-    const { weeks, entries, weekIndex, entryIndex } = this.state;
-    //console.log("week index: " + weekIndex);
-    //console.log("entry index: " + entryIndex);
+    const { weeks, entries } = this.props;
+    const { weekIndex, entryIndex } = this.state;
+
     if (weeks == null) {
       return (
         <div>
@@ -113,17 +55,26 @@ class JournalDash extends Component {
     return (
       <div className="journal-dashboard">
         <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <WeekTab setWeekIndex={this.setWeekIndex} weeks={weeks} />
+          <Grid item xs={2}>
+            <WeekTab
+              setWeekIndex={this.setWeekIndex}
+              weeks={weeks}
+              weekIndex={weekIndex}
+            />
           </Grid>
           <Grid item xs={6}>
-            <EditorTab entries={entries} entryIndex={entryIndex} />
+            <EditorTab
+              entries={entries}
+              weekIndex={weekIndex}
+              entryIndex={entryIndex}
+            />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <EntriesTab
               setEntryIndex={this.setEntryIndex}
-              addEntry={this.addEntry}
               entries={entries}
+              entryIndex={entryIndex}
+              weekIndex={weekIndex}
             />
           </Grid>
         </Grid>
@@ -134,6 +85,11 @@ class JournalDash extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.userData.user,
+  cognitoUser: state.userData.cognitoUser,
+  weeks: state.weeksData.weeks,
+  entries: state.entriesData.entries,
 });
 
-export default connect(mapStateToProps)(JournalDash);
+export default connect(mapStateToProps, { getWeeks, getEntries, addEntry })(
+  JournalDash
+);

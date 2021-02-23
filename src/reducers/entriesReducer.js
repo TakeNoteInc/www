@@ -2,7 +2,7 @@ import { SET_ENTRIES } from "../actions/TYPES";
 
 export default function userReducer(
   state = {
-    entries: [],
+    entries: null,
   },
   action
 ) {

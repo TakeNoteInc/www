@@ -1,9 +1,9 @@
-import { SET_USER, LOADING_TRUE, LOADING_FALSE } from "../actions/TYPES";
+import { SET_USER, SET_COGNITO_DATA } from "../actions/TYPES";
 
 export default function userReducer(
   state = {
     user: null,
-    loading: true,
+    cognitoUser: null,
   },
   action
 ) {
@@ -14,15 +14,10 @@ export default function userReducer(
         user: action.payload,
         loading: false,
       };
-    case LOADING_TRUE:
+    case SET_COGNITO_DATA:
       return {
         ...state,
-        loading: true,
-      };
-    case LOADING_FALSE:
-      return {
-        ...state,
-        loading: false,
+        cognitoUser: action.payload,
       };
     default:
       return state;
