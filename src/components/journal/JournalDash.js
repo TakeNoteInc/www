@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -10,8 +9,6 @@ import EditorTab from "./EditorTab.js";
 
 import { getWeeks } from "../../actions/weeks";
 import { getEntries, addEntry } from "../../actions/entries";
-
-const BASE_URL = "https://vip3e81bu0.execute-api.us-east-1.amazonaws.com/test";
 
 class JournalDash extends Component {
   constructor() {
@@ -24,41 +21,29 @@ class JournalDash extends Component {
     };
     this.setWeekIndex = this.setWeekIndex.bind(this);
     this.setEntryIndex = this.setEntryIndex.bind(this);
-    this.addEntry = this.addEntry.bind(this);
-    this.getAuthData = this.getAuthData.bind(this);
   }
 
-  getAuthData() {
-    const cognitoId = this.props.cognitoUser.attributes.sub;
-    const { jwtToken } = this.props.cognitoUser.signInUserSession.idToken;
-    return { cognitoId, jwtToken };
-  }
-
+  // sets current week index (id) and triggers fetch of weeks entries
   setWeekIndex(weekIndex) {
-    const { jwtToken, cognitoId } = this.getAuthData();
-    this.setState({ weekIndex }, () => {
-      this.props.getEntries(cognitoId, jwtToken, this.state.weekIndex);
+    // when selected week changes reset entry index to 0
+    this.setState({ weekIndex, entryIndex: 0 }, () => {
+      this.props.getEntries(this.props.cognitoUser, this.state.weekIndex);
     });
   }
-
+  // sets current entry index (id) to display in editor
   setEntryIndex(entryIndex) {
     this.setState({ entryIndex });
   }
-
-  addEntry = async () => {
-    const { jwtToken, cognitoId } = this.getAuthData();
-    this.props.addEntry(cognitoId, jwtToken, this.state.weekIndex);
-  };
-
+  // fetch weeks and entries for week (defaults to week 0)
   componentDidMount() {
-    const { jwtToken, cognitoId } = this.getAuthData();
-    this.props.getWeeks(cognitoId, jwtToken);
-    this.props.getEntries(cognitoId, jwtToken, this.state.weekIndex);
+    this.props.getWeeks(this.props.cognitoUser);
+    this.props.getEntries(this.props.cognitoUser, this.state.weekIndex);
   }
 
   render() {
-    const { weekIndex, entryIndex } = this.state;
     const { weeks, entries } = this.props;
+    const { weekIndex, entryIndex } = this.state;
+
     if (weeks == null) {
       return (
         <div>
@@ -78,14 +63,18 @@ class JournalDash extends Component {
             />
           </Grid>
           <Grid item xs={6}>
-            <EditorTab entries={entries} entryIndex={entryIndex} />
+            <EditorTab
+              entries={entries}
+              weekIndex={weekIndex}
+              entryIndex={entryIndex}
+            />
           </Grid>
           <Grid item xs={4}>
             <EntriesTab
               setEntryIndex={this.setEntryIndex}
-              addEntry={this.addEntry}
               entries={entries}
               entryIndex={entryIndex}
+              weekIndex={weekIndex}
             />
           </Grid>
         </Grid>
@@ -96,6 +85,7 @@ class JournalDash extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.userData.user,
+  cognitoUser: state.userData.cognitoUser,
   weeks: state.weeksData.weeks,
   entries: state.entriesData.entries,
 });

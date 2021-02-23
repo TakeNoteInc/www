@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import VerticalMenu from "../../lib/VerticalMenu";
+import { addEntry } from "../../actions/entries";
 
 // Button classes
 const inactiveBtn = "row entries-nav-btn";
@@ -10,7 +11,7 @@ const activeBtn = "row entries-nav-btn active";
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
 
 const EntriesTab = (props) => {
-  const { entries, setEntryIndex, addEntry, entryIndex } = props;
+  const { entries, setEntryIndex, entryIndex, weekIndex } = props;
   //console.log(entries);
   if (entries == null) {
     return (
@@ -47,7 +48,7 @@ const EntriesTab = (props) => {
       <button
         className="standard-btn"
         onClick={() => {
-          addEntry();
+          props.addEntry(props.cognitoUser, weekIndex);
         }}
       >
         Add Entry
@@ -58,6 +59,7 @@ const EntriesTab = (props) => {
 
 const mapStateToProps = (state) => ({
   user: state.userData.user,
+  cognitoUser: state.userData.cognitoUser,
 });
 
-export default connect(mapStateToProps)(EntriesTab);
+export default connect(mapStateToProps, { addEntry })(EntriesTab);

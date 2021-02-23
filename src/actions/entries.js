@@ -3,11 +3,13 @@ import axios from "axios";
 
 const BASE_URL = "https://vip3e81bu0.execute-api.us-east-1.amazonaws.com/test";
 
-export const getEntries = (cognitoId, jwtToken, weekId) => async (dispatch) => {
+export const getEntries = (cognitoUser, weekId) => async (dispatch) => {
   try {
-    const BEARER_TOKEN = "Bearer " + jwtToken;
-    const headers = { headers: { Authorization: BEARER_TOKEN } };
-    const path = BASE_URL + `/users/${cognitoId}/journal/weeks/${weekId}`;
+    const headers = {
+      headers: { Authorization: "Bearer " + cognitoUser.jwtToken },
+    };
+    const path =
+      BASE_URL + `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}`;
     const res = await axios.get(path, headers);
     dispatch({
       type: SET_ENTRIES,
@@ -18,20 +20,40 @@ export const getEntries = (cognitoId, jwtToken, weekId) => async (dispatch) => {
   }
 };
 
-export const addEntry = (cognitoId, jwtToken, weekId) => async (dispatch) => {
+export const addEntry = (cognitoUser, weekId) => async (dispatch) => {
   try {
     const data = {
       entry: {
-        content: "",
+        content: "version 3.",
       },
     };
-    const BEARER_TOKEN = "Bearer " + jwtToken;
-    const headers = { headers: { Authorization: BEARER_TOKEN } };
+    const headers = {
+      headers: { Authorization: "Bearer " + cognitoUser.jwtToken },
+    };
     const path =
-      BASE_URL + `/users/${cognitoId}/journal/weeks/${weekId}/entries`;
+      BASE_URL +
+      `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}/entries`;
     await axios.post(path, data, headers);
     // re-fetch entries to show newly created entry
-    dispatch(getEntries(cognitoId, jwtToken, weekId));
+    dispatch(getEntries(cognitoUser, weekId));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateEntry = (cognitoUser, entryId, weekId, entry) => async (
+  dispatch
+) => {
+  try {
+    const headers = {
+      headers: { Authorization: "Bearer " + cognitoUser.jwtToken },
+    };
+    const path =
+      BASE_URL +
+      `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}/entries/${entryId}`;
+    await axios.put(path, { entry }, headers);
+    // re-fetch entries to show newly created entry
+    dispatch(getEntries(cognitoUser, weekId));
   } catch (err) {
     console.log(err);
   }

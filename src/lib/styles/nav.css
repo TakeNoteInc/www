@@ -5,6 +5,11 @@
   padding: 20px;
 }
 
+.navbar a {
+  text-decoration: none;
+  color: #023e8a;
+}
+
 .nav-title {
   font-size: 20px;
 }
@@ -16,6 +21,5 @@
 }
 
 .nav-links a {
-  color: red;
   margin-left: 20px;
 }

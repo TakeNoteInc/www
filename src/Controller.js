@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { getUser } from "./actions/user";
+import { getUser, setCognitoData } from "./actions/user";
 //ui library
 import Nav from "./lib/Nav";
 import DateForm from "./components/DateForm";
@@ -18,14 +18,17 @@ const links = [
 class Controller extends Component {
   componentDidMount() {
     const { cognitoUser } = this.props;
+    // set cognito auth data to store
+    this.props.setCognitoData(cognitoUser);
     const { jwtToken } = cognitoUser.signInUserSession.idToken;
-    const userId = cognitoUser.attributes.sub;
-    this.props.getUser(jwtToken, userId);
+    const cognitoId = cognitoUser.attributes.sub;
+    // fetch user from database
+    this.props.getUser({ cognitoId, jwtToken });
   }
 
   render() {
-    const { cognitoUser, user, loading } = this.props;
-    if (loading) {
+    const { cognitoUser, user } = this.props;
+    if (user == null) {
       return (
         <div>
           <CircularProgress />
@@ -57,7 +60,8 @@ class Controller extends Component {
 
 const mapStateToProps = (state) => ({
   user: state.userData.user,
-  loading: state.userData.loading,
 });
 
-export default connect(mapStateToProps, { getUser })(Controller);
+export default connect(mapStateToProps, { setCognitoData, getUser })(
+  Controller
+);
