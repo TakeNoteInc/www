@@ -2,9 +2,11 @@ import React from "react";
 
 import HomeDashBoard from "../components/HomeDashBoard";
 
+import "../styles/homepage.css";
+
 const HomePage = (props) => {
   return (
-    <div>
+    <div className="page-container home-page">
       <HomeDashBoard {...props} />
     </div>
   );

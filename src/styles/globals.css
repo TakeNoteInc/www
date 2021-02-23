@@ -1,7 +1,21 @@
+/* 
+CSS HEX
+--navy-blue: #03045eff;
+--dark-cornflower-blue: #023e8aff;
+--star-command-blue: #0077b6ff;
+--blue-green: #0096c7ff;
+--cerulean-crayola: #00b4d8ff;
+--sky-blue-crayola: #48cae4ff;
+--sky-blue-crayola-2: #90e0efff;
+--blizzard-blue: #ade8f4ff;
+--powde
+*/
+
 body {
   margin: 0;
   padding: 0;
-  width: 100vw
+  width: 100vw;
+  font-family: "Open Sans", sans-serif;
 }
 
 h1 {
@@ -14,8 +28,20 @@ p {
   margin: 0;
 }
 
-li{
+li {
   list-style-type: none;
+}
+
+button {
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
 }
 
 .row {
@@ -28,10 +54,39 @@ li{
   flex-direction: column;
 }
 
-.signOut{
-  bottom:0;
-  right:0;
-  position:fixed;
+.col-h-c {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+.signOut {
+  bottom: 0;
+  right: 0;
+  position: fixed;
+}
 
+.page-container {
+  margin: 20px 20px 0 20px;
+}
+
+.standard-btn {
+  font-size: 16px;
+  padding: 4px 16px;
+  background-color: #023e8a;
+  color: #023e8a;
+  color: white;
+}
+
+.standard-btn:hover {
+  background-color: #0077b6;
+}
+
+.standard-btn.active {
+  background-color: white;
+  color: #023e8a;
+}
+
+.text-editor {
+  width: 100%;
+}

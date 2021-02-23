@@ -17,6 +17,7 @@ const EditorTab = (props) => {
   });
   const currentEntry =
     entriesArray.length > 0 ? entriesArray[entryIndex] : null;
+
   return (
     <div>
       {currentEntry ? (
