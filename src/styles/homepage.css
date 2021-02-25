@@ -1,3 +1,8 @@
+/* Home page */
+.home-dashboard {
+  min-height: 100vh;
+}
+
 /* Navbar */
 .home-navbar {
   margin: 0 0 20px 0;
@@ -22,6 +27,10 @@
 .weeks-nav-btn.active {
   background-color: #ededed;
   padding-left: 6px;
+}
+
+.weeks-headers {
+  font-weight: bold;
 }
 
 /* Entries Nav */
@@ -58,4 +67,41 @@
 .entries-nav-btn.active {
   padding-left: 6px;
   background-color: #ededed;
+}
+
+/* Search */
+.search-container {
+  position: relative;
+  width: 100%;
+}
+.search {
+  margin-bottom: 20px;
+}
+.search input {
+  width: 100%;
+  border-radius: 0;
+  transition-duration: 0.5s;
+  padding-left: 4px;
+}
+.search input:focus {
+  outline: none;
+  border: 1px solid #0077b6;
+}
+
+.search-results {
+  z-index: 2;
+  position: absolute;
+  transform: translateY(-20px);
+  width: 100%;
+  background-color: white;
+  padding: 4px 0;
+  border: 1px solid #ededed;
+}
+
+.search-item {
+  padding: 4px;
+  width: 100%;
+}
+.search-item:hover {
+  cursor: pointer;
 }
