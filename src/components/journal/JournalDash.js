@@ -27,7 +27,7 @@ class JournalDash extends Component {
   setWeekIndex(weekIndex) {
     // when selected week changes reset entry index to 0
     this.setState({ weekIndex, entryIndex: 0 }, () => {
-      this.props.getEntries(this.props.cognitoUser, this.state.weekIndex);
+      this.props.getEntries(this.state.weekIndex);
     });
   }
   // sets current entry index (id) to display in editor
@@ -36,8 +36,8 @@ class JournalDash extends Component {
   }
   // fetch weeks and entries for week (defaults to week 0)
   componentDidMount() {
-    this.props.getWeeks(this.props.cognitoUser);
-    this.props.getEntries(this.props.cognitoUser, this.state.weekIndex);
+    //this.props.getWeeks(this.props.cognitoUser);
+    //this.props.getEntriesLocal(this.state.weekIndex);
   }
 
   render() {
@@ -90,6 +90,8 @@ const mapStateToProps = (state) => ({
   entries: state.entriesData.entries,
 });
 
-export default connect(mapStateToProps, { getWeeks, getEntries, addEntry })(
-  JournalDash
-);
+export default connect(mapStateToProps, {
+  getWeeks,
+  getEntries,
+  addEntry,
+})(JournalDash);

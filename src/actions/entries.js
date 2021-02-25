@@ -1,23 +1,13 @@
-import { SET_ENTRIES } from "./TYPES";
+import { SET_ENTRIES, SET_USER, SET_WEEKS } from "./TYPES";
 import axios from "axios";
+import store from "../store";
 
 const BASE_URL = "https://vip3e81bu0.execute-api.us-east-1.amazonaws.com/test";
 
-export const getEntries = (cognitoUser, weekId) => async (dispatch) => {
-  try {
-    const headers = {
-      headers: { Authorization: "Bearer " + cognitoUser.jwtToken },
-    };
-    const path =
-      BASE_URL + `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}`;
-    const res = await axios.get(path, headers);
-    dispatch({
-      type: SET_ENTRIES,
-      payload: res.data.Item.docBody.journal.weeks[0].entries,
-    });
-  } catch (err) {
-    console.log(err);
-  }
+export const getEntries = (weekId) => (dispatch) => {
+  const state = store.getState();
+  const entries = state.weeksData.weeks[weekId].entries;
+  dispatch({ type: SET_ENTRIES, payload: entries });
 };
 
 export const addEntry = (cognitoUser, weekId) => async (dispatch) => {
@@ -33,9 +23,14 @@ export const addEntry = (cognitoUser, weekId) => async (dispatch) => {
     const path =
       BASE_URL +
       `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}/entries`;
-    await axios.post(path, data, headers);
-    // re-fetch entries to show newly created entry
-    dispatch(getEntries(cognitoUser, weekId));
+    const res = await axios.post(path, data, headers);
+    console.log(res);
+    const user = res.data.data.Attributes;
+    dispatch({ type: SET_USER, payload: user });
+    const weeks = user.docBody.journal.weeks;
+    const entries = user.docBody.journal.weeks[weekId].entries;
+    dispatch({ type: SET_WEEKS, payload: weeks });
+    dispatch({ type: SET_ENTRIES, payload: entries });
   } catch (err) {
     console.log(err);
   }
@@ -51,7 +46,8 @@ export const updateEntry = (cognitoUser, entryId, weekId, entry) => async (
     const path =
       BASE_URL +
       `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}/entries/${entryId}`;
-    await axios.put(path, { entry }, headers);
+    const res = await axios.put(path, { entry }, headers);
+    console.log(res);
     // re-fetch entries to show newly created entry
     dispatch(getEntries(cognitoUser, weekId));
   } catch (err) {

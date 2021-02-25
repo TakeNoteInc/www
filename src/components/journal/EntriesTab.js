@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import Search from "../Search";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import VerticalMenu from "../../lib/VerticalMenu";
 import { addEntry } from "../../actions/entries";
@@ -41,9 +42,7 @@ const EntriesTab = (props) => {
 
   return (
     <div className="entries-navbar">
-      <div className="row entries-headers">
-        <p>Entries</p>
-      </div>
+      <Search />
       {entryComponents}
       <button
         className="standard-btn"

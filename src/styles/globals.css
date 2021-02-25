@@ -67,7 +67,9 @@ button:focus {
 }
 
 .page-container {
-  margin: 20px 20px 0 20px;
+  margin: 20px auto 0 auto;
+  width: 96%;
+  max-width: 1200px;
 }
 
 .standard-btn {

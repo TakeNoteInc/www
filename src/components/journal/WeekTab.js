@@ -9,6 +9,9 @@ const WeekTab = (props) => {
 
   return (
     <div className="weeks-navbar">
+      <div className="row weeks-headers">
+        <p>Weeks</p>
+      </div>
       {weeks.map((w, idx) => {
         // Determine if button is active
         let btnClass = weekIndex === idx ? activeBtn : inactiveBtn;

@@ -29,7 +29,7 @@ class HomeDashBoard extends Component {
 
     return (
       <div className="home-dashboard">
-        <div className="home-navbar">
+        <div className="row home-navbar">
           <button
             className={journalIsActive ? inactiveBtn : activeBtn}
             onClick={() => this.toggleView(true)}
