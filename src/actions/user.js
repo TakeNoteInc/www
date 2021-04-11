@@ -2,21 +2,24 @@ import { SET_USER, SET_COGNITO_DATA, SET_WEEKS, SET_ENTRIES } from "./TYPES";
 import axios from "axios";
 import { GET_USER_URI } from "../setupEnv";
 
-export const getUser = (cognitoUser) => async (dispatch) => {
+export const getUser = (cognitoId, jwtToken) => async (dispatch) => {
   try {
     const data = {
-      headers: { Authorization: "Bearer " + cognitoUser.jwtToken },
+      headers: { Authorization: "Bearer " + jwtToken },
     };
-    const res = await axios.get(GET_USER_URI + cognitoUser.cognitoId, data);
-    const user = res.data.Item;
-    dispatch({ type: SET_USER, payload: user });
+    const res = await axios.get(GET_USER_URI + cognitoId, data);
 
+    const user = res.data.Item;
     const weeks = user.docBody.journal.weeks;
     const entries = user.docBody.journal.weeks[0].entries;
+    dispatch({ type: SET_USER, payload: user });
     dispatch({ type: SET_WEEKS, payload: weeks });
     dispatch({ type: SET_ENTRIES, payload: entries });
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    console.log(e);
+    dispatch({ type: SET_USER, payload: {} });
+    dispatch({ type: SET_WEEKS, payload: [] });
+    dispatch({ type: SET_ENTRIES, payload: [] });
   }
 };
 

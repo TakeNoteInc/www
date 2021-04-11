@@ -23,15 +23,16 @@ class DateForm extends Component {
   onSubmit = async () => {
     try {
       const { startDate, endDate } = this.state;
-      const { cognitoId, email, jwtToken } = this.props;
-      const BEARER_TOKEN = "Bearer " + jwtToken;
+      const { email, cognitoId, jwtToken } = this.props;
 
+      const BEARER_TOKEN = "Bearer " + jwtToken;
       const body = { cognitoId, email, startDate, endDate };
       const headers = { headers: { Authorization: BEARER_TOKEN } };
+
+      console.log(headers, body);
       const res = await axios.post(CREATE_USER_URI, body, headers);
       console.log(res);
-      //handle response here
-      this.props.getUser(jwtToken, cognitoId);
+      this.props.getUser(cognitoId, jwtToken);
     } catch (err) {
       console.log(err);
       //set form errors here
