@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import isEmpty from "./utils/isEmpty";
 import { getUser, setCognitoData } from "./actions/user";
 //ui library
 import Nav from "./lib/Nav";
@@ -23,7 +24,7 @@ class Controller extends Component {
     const { jwtToken } = cognitoUser.signInUserSession.idToken;
     const cognitoId = cognitoUser.attributes.sub;
     // fetch user from database
-    this.props.getUser({ cognitoId, jwtToken });
+    this.props.getUser(cognitoId, jwtToken);
   }
 
   render() {
@@ -34,7 +35,15 @@ class Controller extends Component {
           <CircularProgress />
         </div>
       );
-    } else if (user) {
+    } else if (isEmpty(user)) {
+      return (
+        <DateForm
+          email={cognitoUser.attributes.email}
+          cognitoId={cognitoUser.attributes.sub}
+          jwtToken={cognitoUser.signInUserSession.idToken.jwtToken}
+        />
+      );
+    } else {
       return (
         <Router>
           <Nav title="TakeNotes" links={links} />
@@ -45,14 +54,6 @@ class Controller extends Component {
             <ProfilePage user={user.docBody} />
           </Route>
         </Router>
-      );
-    } else {
-      return (
-        <DateForm
-          email={cognitoUser.attributes.email}
-          cognitoId={cognitoUser.attributes.sub}
-          jwtToken={cognitoUser.signInUserSession.idToken.jwtToken}
-        />
       );
     }
   }
