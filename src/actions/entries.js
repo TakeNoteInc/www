@@ -40,18 +40,12 @@ export const addEntry = (cognitoUser, weekId) => async (dispatch) => {
 export const updateEntry = (cognitoUser, entryId, weekId, entry) => async (
   dispatch
 ) => {
-  try {
-    const headers = {
-      headers: { Authorization: "Bearer " + cognitoUser.jwtToken },
-    };
-    const path =
-      BASE_URL +
-      `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}/entries/${entryId}`;
-    const res = await axios.put(path, { entry }, headers);
-    console.log(res.data.Attributes);
-    console.log(weekId);
-    dispatch(reduceUser(res.data.Attributes), weekId);
-  } catch (err) {
-    console.log(err);
-  }
+  const headers = {
+    headers: { Authorization: "Bearer " + cognitoUser.jwtToken },
+  };
+  const path =
+    BASE_URL +
+    `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}/entries/${entryId}`;
+  const res = await axios.put(path, { entry }, headers);
+  dispatch(reduceUser(res.data.Attributes, weekId));
 };

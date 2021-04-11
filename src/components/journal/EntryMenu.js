@@ -22,7 +22,7 @@ const EntryMenu = (props) => {
         REACT_APP_STAG_BASE +
           `users/${user.id}/journal/weeks/${weekIndex}/entries/${entryId}`
       );
-      props.reduceUser(res.data.Attributes, entryIndex);
+      props.reduceUser(res.data.Attributes, weekIndex);
     } catch (e) {
       console.log(e);
     }
