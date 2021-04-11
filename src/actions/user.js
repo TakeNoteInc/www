@@ -10,16 +10,9 @@ export const getUser = (cognitoId, jwtToken) => async (dispatch) => {
     const res = await axios.get(GET_USER_URI + cognitoId, data);
 
     const user = res.data.Item;
-    const weeks = user.docBody.journal.weeks;
-    const entries = user.docBody.journal.weeks[0].entries;
-    dispatch({ type: SET_USER, payload: user });
-    dispatch({ type: SET_WEEKS, payload: weeks });
-    dispatch({ type: SET_ENTRIES, payload: entries });
+    dispatch(reduceUser(user));
   } catch (e) {
-    console.log(e);
-    dispatch({ type: SET_USER, payload: {} });
-    dispatch({ type: SET_WEEKS, payload: [] });
-    dispatch({ type: SET_ENTRIES, payload: [] });
+    dispatch(reduceUser({}));
   }
 };
 
@@ -34,4 +27,13 @@ export const setCognitoData = (cognitoUser) => (dispatch) => {
 
 export const setUserData = (user) => (dispatch) => {
   dispatch({ type: SET_USER, payload: user });
+};
+
+export const reduceUser = (user, weekIndex = 0) => (dispatch) => {
+  if (user === null) return;
+  const weeks = user.docBody ? user.docBody.journal.weeks : [];
+  const entries = weeks.length > 0 ? weeks[weekIndex].entries : [];
+  dispatch({ type: SET_USER, payload: user });
+  dispatch({ type: SET_WEEKS, payload: weeks });
+  dispatch({ type: SET_ENTRIES, payload: entries });
 };

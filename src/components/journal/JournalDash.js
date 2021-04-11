@@ -75,6 +75,7 @@ class JournalDash extends Component {
               entries={entries}
               entryIndex={entryIndex}
               weekIndex={weekIndex}
+              cognitoUser={this.props.cognitoUser}
             />
           </Grid>
         </Grid>

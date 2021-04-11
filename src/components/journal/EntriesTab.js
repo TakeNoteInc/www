@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Search from "../Search";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import VerticalMenu from "../../lib/VerticalMenu";
+import EntryMenu from "./EntryMenu";
 import { addEntry } from "../../actions/entries";
 
 // Button classes
@@ -12,8 +12,7 @@ const activeBtn = "row entries-nav-btn active";
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
 
 const EntriesTab = (props) => {
-  const { entries, setEntryIndex, entryIndex, weekIndex } = props;
-  //console.log(entries);
+  const { user, entries, setEntryIndex, entryIndex, weekIndex } = props;
   if (entries == null) {
     return (
       <div>
@@ -27,6 +26,7 @@ const EntriesTab = (props) => {
     let btnClass = entryIndex === index ? activeBtn : inactiveBtn;
     // Transform date to human readable
     let createdDate = new Date(entries[k].updated);
+    //console.log(entries[k]);
     return (
       <div
         key={index}
@@ -35,7 +35,12 @@ const EntriesTab = (props) => {
       >
         <p>{daysOfWeek[createdDate.getDay()]}</p>
         <small>{createdDate.toDateString()}</small>
-        <VerticalMenu options={["delete"]} />
+        <EntryMenu
+          user={user}
+          entryIndex={entryIndex}
+          weekIndex={weekIndex}
+          entryId={k}
+        />
       </div>
     );
   });

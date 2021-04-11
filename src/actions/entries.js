@@ -1,6 +1,7 @@
 import { SET_ENTRIES, SET_USER, SET_WEEKS } from "./TYPES";
 import axios from "axios";
 import store from "../store";
+import { reduceUser } from "./user";
 
 const BASE_URL = "https://vip3e81bu0.execute-api.us-east-1.amazonaws.com/test";
 
@@ -47,9 +48,9 @@ export const updateEntry = (cognitoUser, entryId, weekId, entry) => async (
       BASE_URL +
       `/users/${cognitoUser.cognitoId}/journal/weeks/${weekId}/entries/${entryId}`;
     const res = await axios.put(path, { entry }, headers);
-    console.log(res);
-    // re-fetch entries to show newly created entry
-    dispatch(getEntries(cognitoUser, weekId));
+    console.log(res.data.Attributes);
+    console.log(weekId);
+    dispatch(reduceUser(res.data.Attributes), weekId);
   } catch (err) {
     console.log(err);
   }
