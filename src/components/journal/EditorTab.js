@@ -1,12 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { updateEntry } from "../../actions/entries";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 import TextEditor from "../TextEditor.js";
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const EditorTab = (props) => {
   const { entries, weekIndex, entryIndex } = props;
+  const [notifications, setNotifications] = useState(null);
+
+  const handleClose = () => {
+    setNotifications(null);
+  };
+  const saveEntry = async () => {
+    try {
+      await props.updateEntry(
+        props.cognitoUser,
+        currentEntry.id,
+        weekIndex,
+        currentEntry
+      );
+      setNotifications("Entry Saved.");
+    } catch (e) {
+      console.log(e);
+    }
+  };
   if (entries == null) {
     return (
       <div>
@@ -32,21 +56,20 @@ const EditorTab = (props) => {
       )}
       {currentEntry ? (
         <div>
-          <button
-            className="standard-btn"
-            onClick={() => {
-              props.updateEntry(
-                props.cognitoUser,
-                currentEntry.id,
-                weekIndex,
-                currentEntry
-              );
-            }}
-          >
+          <button className="standard-btn" onClick={saveEntry}>
             Save Entry
           </button>
         </div>
       ) : null}
+      <Snackbar
+        open={notifications}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success">
+          {notifications}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
