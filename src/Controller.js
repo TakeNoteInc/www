@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import axios from "axios";
 import isEmpty from "./utils/isEmpty";
 import { getUser, setCognitoData } from "./actions/user";
 //ui library
@@ -23,6 +24,7 @@ class Controller extends Component {
     this.props.setCognitoData(cognitoUser);
     const { jwtToken } = cognitoUser.signInUserSession.idToken;
     const cognitoId = cognitoUser.attributes.sub;
+    axios.defaults.headers.common["Authorization"] = "Bearer " + jwtToken;
     // fetch user from database
     this.props.getUser(cognitoId, jwtToken);
   }
