@@ -30,21 +30,23 @@ const EditorTab = (props) => {
       ) : (
         <p>Add an entry to start...</p>
       )}
-      <div>
-        <button
-          className="standard-btn"
-          onClick={() => {
-            props.updateEntry(
-              props.cognitoUser,
-              currentEntry.id,
-              weekIndex,
-              currentEntry
-            );
-          }}
-        >
-          Save Entry
-        </button>
-      </div>
+      {currentEntry ? (
+        <div>
+          <button
+            className="standard-btn"
+            onClick={() => {
+              props.updateEntry(
+                props.cognitoUser,
+                currentEntry.id,
+                weekIndex,
+                currentEntry
+              );
+            }}
+          >
+            Save Entry
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };
