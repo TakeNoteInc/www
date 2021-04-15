@@ -1,0 +1,25 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #023e8a;
+}
+
+.nav-title {
+  font-size: 20px;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.nav-links a {
+  margin-left: 20px;
+}

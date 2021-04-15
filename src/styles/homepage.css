@@ -1,0 +1,107 @@
+/* Home page */
+.home-dashboard {
+  min-height: 100vh;
+}
+
+/* Navbar */
+.home-navbar {
+  margin: 0 0 20px 0;
+  border-bottom: 1px solid #023e8a;
+}
+
+/* Weeks Nav */
+.weeks-nav-btn {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  padding: 8px 4px;
+  border-bottom: 1px solid #ededed;
+  cursor: pointer;
+}
+
+.weeks-nav-btn:hover {
+  background-color: #ededed;
+  padding-left: 6px;
+}
+
+.weeks-nav-btn.active {
+  background-color: #ededed;
+  padding-left: 6px;
+}
+
+.weeks-headers {
+  font-weight: bold;
+}
+
+/* Entries Nav */
+.entries-list {
+  overflow-y: scroll;
+  max-height: 800px;
+}
+
+.entries-headers {
+  justify-content: space-between;
+  font-weight: bold;
+  border-bottom: 1px solid #ededed;
+}
+
+.entries-nav-btn {
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ededed;
+  padding: 0;
+}
+
+.entries-nav-btn small {
+  font-size: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.entries-nav-btn:hover {
+  background-color: #ededed;
+  cursor: pointer;
+  padding-left: 6px;
+}
+
+.entries-nav-btn.active {
+  padding-left: 6px;
+  background-color: #ededed;
+}
+
+/* Search */
+.search-container {
+  position: relative;
+  width: 100%;
+}
+.search {
+  margin-bottom: 20px;
+}
+.search input {
+  width: 100%;
+  border-radius: 0;
+  transition-duration: 0.5s;
+  padding-left: 4px;
+}
+.search input:focus {
+  outline: none;
+  border: 1px solid #0077b6;
+}
+
+.search-results {
+  z-index: 2;
+  position: absolute;
+  transform: translateY(-20px);
+  width: 100%;
+  background-color: white;
+  padding: 4px 0;
+  border: 1px solid #ededed;
+}
+
+.search-item {
+  padding: 4px;
+  width: 100%;
+}
+.search-item:hover {
+  cursor: pointer;
+}
