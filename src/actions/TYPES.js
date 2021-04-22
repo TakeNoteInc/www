@@ -11,3 +11,6 @@ export const SET_WEEKS = "SET_WEEKS";
 
 //entries
 export const SET_ENTRIES = "SET_ENTRIES";
+
+//notes 
+export const SET_NOTES = "SET_NOTES";

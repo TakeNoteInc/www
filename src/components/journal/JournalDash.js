@@ -62,14 +62,14 @@ class JournalDash extends Component {
               weekIndex={weekIndex}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <EditorTab
               entries={entries}
               weekIndex={weekIndex}
               entryIndex={entryIndex}
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={2}>
             <EntriesTab
               setEntryIndex={this.setEntryIndex}
               entries={entries}
