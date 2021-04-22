@@ -8,5 +8,5 @@ export default combineReducers({
   userData: userReducer,
   weeksData: weeksReducer,
   entriesData: entriesReducer,
-  notesDate: notesReducer
+  notesData: notesReducer,
 });

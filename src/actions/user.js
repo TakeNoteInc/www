@@ -1,4 +1,10 @@
-import { SET_USER, SET_COGNITO_DATA, SET_WEEKS, SET_ENTRIES } from "./TYPES";
+import {
+  SET_USER,
+  SET_COGNITO_DATA,
+  SET_WEEKS,
+  SET_ENTRIES,
+  SET_NOTES,
+} from "./TYPES";
 import axios from "axios";
 import { GET_USER_URI } from "../setupEnv";
 
@@ -33,7 +39,10 @@ export const reduceUser = (user, weekIndex = 0) => (dispatch) => {
   if (user === null) return;
   const weeks = user.docBody ? user.docBody.journal.weeks : [];
   const entries = weeks.length > 0 ? weeks[weekIndex].entries : [];
+  const notes = user.docBody ? user.docBody?.notes : {};
+
   dispatch({ type: SET_USER, payload: user });
   dispatch({ type: SET_WEEKS, payload: weeks });
   dispatch({ type: SET_ENTRIES, payload: entries });
+  dispatch({ type: SET_NOTES, payload: notes });
 };

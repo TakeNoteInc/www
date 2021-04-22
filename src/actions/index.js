@@ -14,8 +14,11 @@ export const getUser = (cognitoUser) => async (dispatch) => {
 
     const weeks = user.docBody.journal.weeks;
     const entries = user.docBody.journal.weeks[0].entries;
+    const notes = user.docBody.notes;
+
     dispatch({ type: SET_WEEKS, payload: weeks });
     dispatch({ type: SET_ENTRIES, payload: entries });
+    dispatch({ type: SET_NOTES, payload: notes });
   } catch (err) {
     console.log(err);
   }
